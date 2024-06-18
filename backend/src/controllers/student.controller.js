@@ -10,29 +10,36 @@ const bcrypt = require('bcrypt');
  *   schemas:
  *     Student:
  *       type: object
- *       properties:
- *         student_Fname:
- *           type: string
- *         student_Lname:
- *           type: string
- *         student_Email:
- *           type: string
- *           format: email
- *         student_Password:
- *           type: string
- *           format: password
  *       required:
- *         - student_Fname
- *         - student_Lname
- *         - student_Email
- *         - student_Password
+ *         - firstName
+ *         - lastName
+ *         - email
+ *         - password
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: The first name of the student
+ *         lastName:
+ *           type: string
+ *           description: The last name of the student
+ *         email:
+ *           type: string
+ *           description: The email of the student
+ *         password:
+ *           type: string
+ *           description: The password of the student
+ *       example:
+ *         firstName: John
+ *         lastName: Doe
+ *         email: john.doe@example.com
+ *         password: password123
  */
-
 /**
  * @swagger
- * /students/signUp:
+ * /students/signup:
  *   post:
  *     summary: Create a new student
+ *     tags : [Students]
  *     description: Register a new student with the provided details.
  *     requestBody:
  *       required: true
@@ -98,9 +105,10 @@ exports.createStudent = async (req, res) => {
 
 /**
  * @swagger
- * /students/signIn:
+ * /student/login:
  *   post:
  *     summary: Sign in to the system
+ *     tags: [Students]
  *     description: Validates student credentials and returns an authentication token upon successful sign-in.
  *     requestBody:
  *       required: true

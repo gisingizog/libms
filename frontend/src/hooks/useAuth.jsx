@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import axios from "../axios.config";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
@@ -12,6 +12,13 @@ export const AuthProvider = ({ children }) => {
     const [signingUp, setSigningUp] = useState(false);
     const [student, setStudent] = useState(null);
     const navigate = useNavigate();
+    const location=useLocation();
+
+    useEffect(()=>{
+        if(!student && location.pathname.includes("/dashboard")){
+            navigate("/")
+        }
+    },[location.pathname,student]);
 
     const login = async (email, password) => {
         setLoggingIn(true)
@@ -20,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             if (data.success) {
                 console.log(data.student)
                 setStudent(data.student);
+                localStorage.setItem("token", data.token);
                 toast.success("You've Logged in successfully");
                 navigate("/dashboard");
             } else {
